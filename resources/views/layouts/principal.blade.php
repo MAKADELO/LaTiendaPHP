@@ -8,7 +8,7 @@
     <title>La Tienda de PHP</title>
 </head>
 <body>
-    <nav class="green darken-1">
+    <nav class="deep-purple lighten-4">
         <div class="nav-wrapper">
         <a href="#!" class="brand-logo center">LA TIENDA PHP</a>
         <ul class="left hide-on-med-and-down">

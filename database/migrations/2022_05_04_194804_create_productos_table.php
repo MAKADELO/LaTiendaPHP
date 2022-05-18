@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('nombre');
-            $table->text('imagen');
+            $table->text('imagen')->nullable();
             $table->longText('descripcion');
             $table->decimal('precio', 8, 2);
             $table->foreignId('marca_id')->constrained();
