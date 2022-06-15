@@ -6,8 +6,8 @@ use App\Models\Producto;
 use App\Models\Marca;
 use App\Models\Categoria;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreProductRequest;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\storeProductoRequest;
 
 class ProductoController extends Controller
 {
@@ -18,7 +18,8 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        echo "Aquí va a ir el catálogo de productos.";
+        $productos = Producto::all();
+        return view('producto.index')->with('productos', $productos);
     }
 
     /**
@@ -39,25 +40,33 @@ class ProductoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(storeProductoRequest $request)
+    public function store(StoreProductRequest $request)
     {
-
-
-        //2.crear validacion
         $p = new Producto();
         $p->nombre = $request->nombre;
         $p->descripcion = $request->desc;
         $p->precio = $request->precio;
         $p->marca_id = $request->marca;
         $p->categoria_id = $request->categoria;
+
+        // Objeto File
+
+        $archivo = $request->imagen;
+        $p->imagen = $archivo->getClientOriginalName();
+
+        // Ruta donde se almacena el archivo
+
+        $ruta = public_path()."/img/producto";
+        
+        // Movemos archivo a ruta
+
+        $archivo->move($ruta, $request->imagen->getClientOriginalName());
+
         $p->save();
-        //redireccionar: a una ruta disponible
-        return redirect('productos/create')
-            ->with('mensaje', "Producto registrado exitosamente");
-
         
-        
+        //Redireccionar a una ruta disponible.
 
+        return redirect('productos/create')->with('mensaje', "Producto registrado exitosamente.");
     }
 
     /**
@@ -68,7 +77,14 @@ class ProductoController extends Controller
      */
     public function show($producto)
     {
-        echo "Aquí se va a mostrar el detalle del producto.";
+        // Seleccionar el producto a mostrar
+
+        $p = Producto::find($producto);
+
+        // Mostrar vista de detalles de producto
+        // Enviándole el producto seleccionado
+
+        return view('producto.details')->with('producto', $p);
     }
 
     /**

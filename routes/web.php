@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -144,3 +145,4 @@ Route::get('/Paises', function () {
  */
 
  Route::resource('productos', ProductoController::class);
+ Route::resource('cart', CartController::class, ['only'=>['index', 'store', 'destroy']]);
